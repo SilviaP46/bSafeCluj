@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">bSafeCluj</string>
+    <string name="SignIn">Sign In</string>
+    <string name="Phone">Phone Number</string>
+    <string name="enter_yout_phone_number">Enter yout phone number:</string>
+    <string name="bsafecluj">bSafeCluj</string>
+    <string name="phoneLabel">Enter your phone number:</string>
 </resources>
