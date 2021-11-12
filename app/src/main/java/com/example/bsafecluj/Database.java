@@ -23,7 +23,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String createTableStm= "CREATE TABLE " + USER_TABLE + " ( " + ID_USER_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME_COLUMN + " TEXT, " + PHONE_NUMBER_COLUMN + " INTEGER)";
-
+        db.execSQL(createTableStm);
     }
 
     //version changes

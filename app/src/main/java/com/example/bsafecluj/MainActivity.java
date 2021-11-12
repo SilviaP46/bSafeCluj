@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Database db = new Database(MainActivity.this);
+                db.addOne(user);
             }
         });
     }
