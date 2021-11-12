@@ -2,6 +2,7 @@ package com.example.bsafecluj;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     user = new User(1, Long.parseLong(enterPhone.getText().toString()));
                     Toast.makeText(MainActivity.this, user.getPhoneNumber().toString(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, SignUpActivity.class));
                 }
                 catch(Exception e){
                     Toast.makeText(MainActivity.this, "Enter phone number!!", Toast.LENGTH_SHORT).show();
                     user=new User(-1,"error",Long.parseLong("0"));
+
 
                 }
 
