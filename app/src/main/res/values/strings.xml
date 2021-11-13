@@ -5,4 +5,6 @@
     <string name="enter_yout_phone_number">Enter yout phone number:</string>
     <string name="bsafecluj">bSafeCluj</string>
     <string name="phoneLabel">Enter your phone number:</string>
+    <string name="birthyear_subject_hint">Enter birthyear</string>
+    <string name="fullName_subject_hint">Enter full name</string>
 </resources>
