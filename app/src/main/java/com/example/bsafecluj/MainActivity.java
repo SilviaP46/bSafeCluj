@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     user = new User(1, Long.parseLong(enterPhone.getText().toString()));
                     Toast.makeText(MainActivity.this, user.getPhoneNumber().toString(), Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(MainActivity.this, ConfirmPhoneNumber.class));
                     sendSMSMessage();
+                    startActivity(new Intent(MainActivity.this, ConfirmPhoneNumber.class));
                 }
                 catch(Exception e){
                     Toast.makeText(MainActivity.this, "Enter phone number!!", Toast.LENGTH_SHORT).show();
@@ -53,29 +53,31 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Database db = new Database(MainActivity.this);
+                db.addOne(user);
             }
         });
     }
 
     protected void sendSMSMessage() {
         phoneNo = enterPhone.getText().toString();
-        message = "Salut Silvia!";
+        message = "Hello "+ enterPhone.getText().toString()+ " welcome to bSafeCluj by Silvia and Sarah!";
+
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+                    Manifest.permission.SEND_SMS)) { } }
+        else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
+                //Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_SEND_SMS: {
                 if (grantResults.length > 0
