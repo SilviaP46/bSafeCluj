@@ -12,6 +12,7 @@ import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     String phoneNo;
     String message;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         nextButton=findViewById(R.id.nextButton);
         enterPhone=findViewById(R.id.editTextPhone);
+
 
         //button listeners
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Database db = new Database(MainActivity.this);
+                db.addOne(user);
             }
         });
     }
