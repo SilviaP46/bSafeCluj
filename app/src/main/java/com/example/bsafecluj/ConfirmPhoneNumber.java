@@ -8,26 +8,29 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SignUpActivity extends AppCompatActivity {
-    Button signUpButton;
+public class ConfirmPhoneNumber extends AppCompatActivity {
+
+    Button confirmPhoneNrBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.second_signin);
+        setContentView(R.layout.confirm_phone_number);
+
+        confirmPhoneNrBtn =findViewById(R.id.confirmPhoneButton);
 
 
-        signUpButton = findViewById(R.id.signUpbutton);
-
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-
+        confirmPhoneNrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 try {
-                    startActivity(new Intent(SignUpActivity.this,SignUpActivity.class));
+
+                    startActivity(new Intent(ConfirmPhoneNumber.this, SignUpActivity.class));
                 }
                 catch(Exception e){
-                    Toast.makeText(SignUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ConfirmPhoneNumber.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
 
 
 
@@ -36,11 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
-
-
-
-
 }
+
