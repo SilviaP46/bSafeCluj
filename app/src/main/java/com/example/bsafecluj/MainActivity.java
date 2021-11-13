@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     user = new User(1, Long.parseLong(enterPhone.getText().toString()));
                     Toast.makeText(MainActivity.this, user.getPhoneNumber().toString(), Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(MainActivity.this, ConfirmPhoneNumber.class));
+                    startActivity(new Intent(MainActivity.this, ConfirmPhoneNumber.class));
                     sendSMSMessage();
                 }
                 catch(Exception e){
