@@ -37,8 +37,8 @@
 
     <EditText
         android:id="@+id/editTextPersonName"
-        android:layout_width="266dp"
-        android:layout_height="66dp"
+        android:layout_width="242dp"
+        android:layout_height="61dp"
         android:alpha="0.5"
         android:ems="10"
         android:hint="@string/fullName_subject_hint"
@@ -46,15 +46,15 @@
         android:textColor="#91B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
+        app:layout_constraintVertical_bias="0.516" />
 
     <EditText
         android:id="@+id/editTextNumber"
-        android:layout_width="208dp"
-        android:layout_height="70dp"
+        android:layout_width="242dp"
+        android:layout_height="61dp"
         android:alpha="0.5"
         android:ems="10"
         android:hint="@string/birthyear_subject_hint"
@@ -62,10 +62,10 @@
         android:textColor="#91B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.344"
+        app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.732" />
+        app:layout_constraintVertical_bias="0.722" />
 
     <Button
         android:id="@+id/signUpbutton"
@@ -81,15 +81,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.856" />
 
-    <ImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/Profile_Image"
-        android:layout_width="125dp"
-        android:layout_height="127dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/profile"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.184"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintVertical_bias="0.187" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
