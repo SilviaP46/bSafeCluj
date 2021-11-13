@@ -16,9 +16,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_signin);
 
-
         signUpButton = findViewById(R.id.signUpbutton);
-
         signUpButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -28,19 +26,8 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 catch(Exception e){
                     Toast.makeText(SignUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-
-
                 }
-
             }
         });
-
-
     }
-
-
-
-
-
 }
