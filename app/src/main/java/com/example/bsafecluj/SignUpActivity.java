@@ -13,6 +13,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Database db=new Database(SignUpActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_signin);
 
@@ -29,5 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //db.storeNameAndBirthDate(user);
     }
 }
