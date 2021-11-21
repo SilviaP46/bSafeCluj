@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,23 +23,32 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
     String phoneNo;
     String message;
     String randomCode;
+    EditText enterCode;
+    Database db;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Database db=new Database(ConfirmPhoneNumber.this);
         Random random=new Random();
         randomCode=String.format("%04d", random.nextInt(10000));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.confirm_phone_number);
         confirmPhoneNrBtn =findViewById(R.id.confirmPhoneButton);
+        enterCode=findViewById(R.id.enterCode);
 
         Bundle extras = getIntent().getExtras();
+        Intent i=getIntent();
         if (extras != null) {
-            phoneNo = extras.getString("phoneNr");
+            //phoneNo = extras.getString("phoneNr");
+            //db=extras.getParcelable("db");
+            user=extras.getParcelable("user");
             //The key argument here must match that used in the other activity
         }
 
         sendSMSMessage();
+
 
 
         confirmPhoneNrBtn.setOnClickListener(new View.OnClickListener() {
@@ -46,8 +56,14 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
             public void onClick(View v) {
 
                 try {
+                    if(randomCode.equals(enterCode.getText().toString())){
+                        startActivity(new Intent(ConfirmPhoneNumber.this, SignUpActivity.class));
+                    }
 
-                    startActivity(new Intent(ConfirmPhoneNumber.this, SignUpActivity.class));
+                    else{
+                        Toast.makeText(ConfirmPhoneNumber.this, "Code is incorrect!!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 catch(Exception e){
                     Toast.makeText(ConfirmPhoneNumber.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
@@ -57,11 +73,13 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
             }
         });
 
+        db.storePhoneNr(user);
+
     }
 
 
     protected void sendSMSMessage() {
-        phoneNo = phoneNo;
+        phoneNo = user.getPhoneNumber().toString();
         message = "Your security code is: "+randomCode;
 
 
@@ -72,7 +90,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
                     Manifest.permission.SEND_SMS)) { } }
         else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
-            //Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ConfirmPhoneNumber.this, "ok", Toast.LENGTH_SHORT).show();
         }
     }
 
