@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         nextButton=findViewById(R.id.nextButton);
         enterPhone=findViewById(R.id.editTextPhone);
 
+
         //button listeners
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     i.putExtra("user", (Parcelable) user);
                     startActivity(i);
 
+
                 }
                 catch(Exception e){
                     Toast.makeText(MainActivity.this, "Enter phone number!!", Toast.LENGTH_SHORT).show();
@@ -58,9 +61,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 }
