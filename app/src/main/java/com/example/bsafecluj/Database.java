@@ -9,11 +9,20 @@ import androidx.annotation.Nullable;
 
 public class Database extends SQLiteOpenHelper {
 
+    private static Database sInstance;
+
     public static final String USER_TABLE = "USER";
     public static final String ID_USER_COLUMN = "idUser";
     public static final String USERNAME_COLUMN = "username";
     public static final String PHONE_NUMBER_COLUMN = "phoneNumber";
     public static final String BIRTH_YEAR_COLUMN = "birthYear";
+
+    public static synchronized Database getInstance(Context context){
+        if (sInstance == null) {
+            sInstance = new Database(context.getApplicationContext());
+        }
+        return sInstance;
+    }
 
     public Database(@Nullable Context context) {
         super(context, "bSafeCluj.db", null, 1);

@@ -36,7 +36,7 @@
         app:layout_constraintVertical_bias="0.43" />
 
     <EditText
-        android:id="@+id/editTextPersonName"
+        android:id="@+id/enterUserName"
         android:layout_width="242dp"
         android:layout_height="61dp"
         android:alpha="0.5"
@@ -52,7 +52,7 @@
         app:layout_constraintVertical_bias="0.516" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/enterBirthYear"
         android:layout_width="242dp"
         android:layout_height="61dp"
         android:alpha="0.5"

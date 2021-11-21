@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,20 +22,37 @@ public class SignUpActivity extends AppCompatActivity {
     private ImageView ProfileImage;
     private static final int PICK_IMAGE = 1;
     Uri imageUri;
+    User user;
+    EditText enterUserName;
+    EditText enterBirthYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Database db = Database.getInstance(SignUpActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_signin);
 
-
-
         signUpButton = findViewById(R.id.signUpbutton);
+        enterUserName=findViewById(R.id.enterUserName);
+        enterBirthYear=findViewById(R.id.enterBirthYear);
+
+        Bundle extras = getIntent().getExtras();
+        Intent i=getIntent();
+        if (extras != null) {
+            user=extras.getParcelable("user");
+            //The key argument here must match that used in the other activity
+        }
+
+        user.setBirthYear(Integer.parseInt(String.valueOf(enterBirthYear)));
+        user.setUsername(String.valueOf(enterUserName));
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(SignUpActivity.this,SignUpActivity.class));
+                    db.storeNameAndBirthDate(user);
                 }
                 catch(Exception e){
                     Toast.makeText(SignUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

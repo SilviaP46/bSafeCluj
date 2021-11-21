@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Database db = Database.getInstance(MainActivity.this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -62,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                Database db = new Database(MainActivity.this);
-                db.storePhoneNr(user);
+
+                //db.storePhoneNr(user);
             }
         });
     }

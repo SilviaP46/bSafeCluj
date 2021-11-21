@@ -29,7 +29,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Database db=new Database(ConfirmPhoneNumber.this);
+        Database db = Database.getInstance(ConfirmPhoneNumber.this);
         Random random=new Random();
         randomCode=String.format("%04d", random.nextInt(10000));
 
@@ -41,7 +41,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         Intent i=getIntent();
         if (extras != null) {
-            //phoneNo = extras.getString("phoneNr");
+            phoneNo = extras.getString("phoneNr");
             //db=extras.getParcelable("db");
             user=extras.getParcelable("user");
             //The key argument here must match that used in the other activity
@@ -79,7 +79,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
 
     protected void sendSMSMessage() {
-        phoneNo = user.getPhoneNumber().toString();
+        //phoneNo = user.getPhoneNumber().toString();
         message = "Your security code is: "+randomCode;
 
 
