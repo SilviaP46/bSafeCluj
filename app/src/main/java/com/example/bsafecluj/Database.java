@@ -14,6 +14,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String USERNAME_COLUMN = "username";
     public static final String PHONE_NUMBER_COLUMN = "phoneNumber";
 
+
+
     public Database(@Nullable Context context) {
         super(context, "bSafeCluj.db", null, 1);
     }
@@ -23,7 +25,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String createTableStm= "CREATE TABLE " + USER_TABLE + " ( " + ID_USER_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME_COLUMN + " TEXT, " + PHONE_NUMBER_COLUMN + " INTEGER)";
-
+        db.execSQL(createTableStm);
     }
 
     //version changes
