@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,8 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Database db=new Database(ConfirmPhoneNumber.this);
+
+        Database db = Database.getInstance(ConfirmPhoneNumber.this);
         Random random=new Random();
         randomCode=String.format("%04d", random.nextInt(10000));
 
@@ -41,8 +43,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         Intent i=getIntent();
         if (extras != null) {
-            //phoneNo = extras.getString("phoneNr");
-            //db=extras.getParcelable("db");
+            phoneNo = extras.getString("phoneNr");
             user=extras.getParcelable("user");
             //The key argument here must match that used in the other activity
         }
@@ -57,7 +58,10 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
                 try {
                     if(randomCode.equals(enterCode.getText().toString())){
-                        startActivity(new Intent(ConfirmPhoneNumber.this, SignUpActivity.class));
+
+                        Intent i = new Intent(ConfirmPhoneNumber.this, SignUpActivity.class);
+                        i.putExtra("user", (Parcelable) user);
+                        startActivity(i);
                     }
 
                     else{
@@ -79,7 +83,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
 
     protected void sendSMSMessage() {
-        phoneNo = user.getPhoneNumber().toString();
+        //phoneNo = user.getPhoneNumber().toString();
         message = "Your security code is: "+randomCode;
 
 
@@ -116,4 +120,5 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
 
 }
+
 

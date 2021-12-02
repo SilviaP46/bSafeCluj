@@ -14,6 +14,7 @@ public class User implements Parcelable {
     public User() {
     }
 
+
     public User(int idUser, Long phoneNumber) {
         this.idUser = idUser;
         this.phoneNumber = phoneNumber;
@@ -54,13 +55,6 @@ public class User implements Parcelable {
         }
     };
 
-    public Integer getBirthYear() {
-        return birthYear;
-    }
-
-    public void setBirthYear(Integer birthYear) {
-        this.birthYear = birthYear;
-    }
 
     public int getIdUser() {
         return idUser;
@@ -86,6 +80,13 @@ public class User implements Parcelable {
         this.phoneNumber = phoneNumber;
     }
 
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Integer birthYear) {
+        this.birthYear = birthYear;
+    }
 
     @Override
     public String toString() {
@@ -111,11 +112,13 @@ public class User implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(phoneNumber);
         }
+
         if (birthYear == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeInt(birthYear);
         }
+
     }
 }

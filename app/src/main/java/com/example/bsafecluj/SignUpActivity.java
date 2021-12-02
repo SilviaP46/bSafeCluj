@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,21 +22,53 @@ public class SignUpActivity extends AppCompatActivity {
     private ImageView ProfileImage;
     private static final int PICK_IMAGE = 1;
     Uri imageUri;
+    User user;
+    EditText enterUserName;
+    EditText enterBirthYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Database db=new Database(SignUpActivity.this);
+
+        Database db = Database.getInstance(SignUpActivity.this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_signin);
 
-
-
         signUpButton = findViewById(R.id.signUpbutton);
+        enterUserName=findViewById(R.id.enterUserName);
+        enterBirthYear=findViewById(R.id.enterBirthYear);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            user=extras.getParcelable("user");
+        }
+
+        Toast.makeText(SignUpActivity.this, user.getPhoneNumber()+"  "+user.getBirthYear(), Toast.LENGTH_SHORT).show();
+
+
+
+//
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(SignUpActivity.this,SignUpActivity.class));
+
+                    user.setUsername(enterUserName.getText().toString());
+                    user.setBirthYear(Integer.parseInt(enterBirthYear.getText().toString()));
+
+                    if(user.getBirthYear()==null || user.getUsername()==null ){
+                        Toast.makeText(SignUpActivity.this, "Make sure you enter a valid username and birthdate!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+
+                        Toast.makeText(SignUpActivity.this, "!", Toast.LENGTH_SHORT).show();
+
+                        db.storeNameAndBirthDate(user);
+                        startActivity(new Intent(SignUpActivity.this,MapPage.class));
+                    }
+
+
                 }
                 catch(Exception e){
                     Toast.makeText(SignUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

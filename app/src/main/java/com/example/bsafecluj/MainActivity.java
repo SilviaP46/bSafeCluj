@@ -15,12 +15,10 @@ public class MainActivity extends AppCompatActivity {
     Button nextButton;
     EditText enterPhone;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Database db = Database.getInstance(MainActivity.this);
 
-        Database db = new Database(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -43,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
                     Intent i = new Intent(MainActivity.this, ConfirmPhoneNumber.class);
                     i.putExtra("phoneNr",enterPhone.getText().toString());
-                    //i.putExtra("db", (Parcelable) db);
                     i.putExtra("user", (Parcelable) user);
                     startActivity(i);
 
@@ -56,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                db.storePhoneNr(user);
+
+                //db.storePhoneNr(user);
 
             }
         });
