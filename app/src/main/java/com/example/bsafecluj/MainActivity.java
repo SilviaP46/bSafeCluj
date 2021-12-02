@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
     Button nextButton;
     EditText enterPhone;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Database db = Database.getInstance(MainActivity.this);

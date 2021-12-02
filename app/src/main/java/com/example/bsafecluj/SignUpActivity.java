@@ -38,21 +38,36 @@ public class SignUpActivity extends AppCompatActivity {
         enterBirthYear=findViewById(R.id.enterBirthYear);
 
         Bundle extras = getIntent().getExtras();
-        Intent i=getIntent();
         if (extras != null) {
             user=extras.getParcelable("user");
-            //The key argument here must match that used in the other activity
         }
 
-        user.setBirthYear(Integer.parseInt(String.valueOf(enterBirthYear)));
-        user.setUsername(String.valueOf(enterUserName));
+        Toast.makeText(SignUpActivity.this, user.getPhoneNumber()+"  "+user.getBirthYear(), Toast.LENGTH_SHORT).show();
+
+
+
+//
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(SignUpActivity.this,SignUpActivity.class));
-                    db.storeNameAndBirthDate(user);
+
+                    user.setUsername(enterUserName.getText().toString());
+                    user.setBirthYear(Integer.parseInt(enterBirthYear.getText().toString()));
+
+                    if(user.getBirthYear()==null || user.getUsername()==null ){
+                        Toast.makeText(SignUpActivity.this, "Make sure you enter a valid username and birthdate!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+
+                        Toast.makeText(SignUpActivity.this, "!", Toast.LENGTH_SHORT).show();
+
+                        db.storeNameAndBirthDate(user);
+                        startActivity(new Intent(SignUpActivity.this,MapPage.class));
+                    }
+
+
                 }
                 catch(Exception e){
                     Toast.makeText(SignUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

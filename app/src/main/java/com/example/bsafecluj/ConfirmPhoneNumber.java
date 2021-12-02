@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
@@ -57,7 +58,10 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
                 try {
                     if(randomCode.equals(enterCode.getText().toString())){
-                        startActivity(new Intent(ConfirmPhoneNumber.this, SignUpActivity.class));
+
+                        Intent i = new Intent(ConfirmPhoneNumber.this, SignUpActivity.class);
+                        i.putExtra("user", (Parcelable) user);
+                        startActivity(i);
                     }
 
                     else{
