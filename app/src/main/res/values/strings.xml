@@ -7,4 +7,6 @@
     <string name="phoneLabel">Enter your phone number:</string>
     <string name="birthyear_subject_hint">Enter birthyear</string>
     <string name="fullName_subject_hint">Enter full name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
