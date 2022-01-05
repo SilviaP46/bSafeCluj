@@ -1,6 +1,7 @@
 package com.example.bsafecluj;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +58,11 @@ public class SignUpActivity extends AppCompatActivity {
                     user.setUsername(enterUserName.getText().toString());
                     user.setBirthYear(Integer.parseInt(enterBirthYear.getText().toString()));
 
+                    SharedPreferences.Editor editor = getSharedPreferences("name", MODE_PRIVATE).edit();
+                    editor.putString("phoneNr", user.getPhoneNumber().toString());
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.apply();
+
                     if(user.getBirthYear()==null || user.getUsername()==null ){
                         Toast.makeText(SignUpActivity.this, "Make sure you enter a valid username and birthdate!", Toast.LENGTH_SHORT).show();
                     }
@@ -64,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                         Toast.makeText(SignUpActivity.this, "!", Toast.LENGTH_SHORT).show();
 
-                        db.storeNameAndBirthDate(user);
+                        db.storeUserLoginData(user);
                         startActivity(new Intent(SignUpActivity.this,MapPage.class));
                     }
 
@@ -108,6 +114,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         //db.storeNameAndBirthDate(user);
+
 
     }
 }

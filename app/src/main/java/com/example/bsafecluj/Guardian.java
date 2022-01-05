@@ -1,15 +1,14 @@
 package com.example.bsafecluj;
 
-import java.util.List;
 
 public class Guardian {
 
     private int idGuardian;
     private String username;
-    private Long phoneNumber;
-    private List<Guardian> guardianList;
+    private String phoneNumber;
 
-    public Guardian(int idGuardian, String username, Long phoneNumber) {
+
+    public Guardian(int idGuardian, String username, String phoneNumber) {
         this.idGuardian = idGuardian;
         this.username = username;
         this.phoneNumber = phoneNumber;
@@ -31,11 +30,11 @@ public class Guardian {
         this.username = username;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }

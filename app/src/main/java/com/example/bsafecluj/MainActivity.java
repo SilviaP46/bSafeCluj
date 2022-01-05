@@ -2,7 +2,9 @@ package com.example.bsafecluj;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -14,6 +16,9 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     Button nextButton;
     EditText enterPhone;
+    private String phoneNr;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
         nextButton=findViewById(R.id.nextButton);
         enterPhone=findViewById(R.id.editTextPhone);
 
+        SharedPreferences prefs = getSharedPreferences("name", MODE_PRIVATE);
+        boolean isLoggedIn= prefs.getBoolean("isLoggedIn", false);
+
+        if(isLoggedIn){
+            startActivity(new Intent(getApplicationContext(),MapPage.class));
+            finish();
+            return;
+        }
+
 
         //button listeners
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -35,9 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 User user;
 
                 try {
-                    user = new User(1, Long.parseLong(enterPhone.getText().toString()));
+                    user = new User(1, enterPhone.getText().toString());
                     Toast.makeText(MainActivity.this, user.getPhoneNumber().toString(), Toast.LENGTH_SHORT).show();
-
 
                     Intent i = new Intent(MainActivity.this, ConfirmPhoneNumber.class);
                     i.putExtra("phoneNr",enterPhone.getText().toString());
@@ -48,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 catch(Exception e){
                     Toast.makeText(MainActivity.this, "Enter phone number!!", Toast.LENGTH_SHORT).show();
-                    user=new User(-1,"error",Long.parseLong("0"),0);
+                    user=new User(-1,"error","?",0);
 
 
                 }

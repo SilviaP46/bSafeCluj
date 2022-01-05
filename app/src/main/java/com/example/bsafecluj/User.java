@@ -3,39 +3,25 @@ package com.example.bsafecluj;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class User implements Parcelable {
 
     private int idUser;
     private String username;
-    private Long phoneNumber;
+    private String phoneNumber;
     private Integer birthYear;
+    private List<Guardian> guardianList;
 
 
     public User() {
     }
 
 
-    public User(int idUser, Long phoneNumber) {
-        this.idUser = idUser;
-        this.phoneNumber = phoneNumber;
-    }
-
-
-    public User(int idUser, String username, Long phoneNumber, Integer birthYear) {
-        this.idUser = idUser;
-        this.username = username;
-        this.phoneNumber = phoneNumber;
-        this.birthYear=birthYear;
-    }
-
     protected User(Parcel in) {
         idUser = in.readInt();
         username = in.readString();
-        if (in.readByte() == 0) {
-            phoneNumber = null;
-        } else {
-            phoneNumber = in.readLong();
-        }
+        phoneNumber = in.readString();
         if (in.readByte() == 0) {
             birthYear = null;
         } else {
@@ -55,6 +41,26 @@ public class User implements Parcelable {
         }
     };
 
+    public List<Guardian> getGuardianList() {
+        return guardianList;
+    }
+
+    public void setGuardianList(List<Guardian> guardianList) {
+        this.guardianList = guardianList;
+    }
+
+    public User(int idUser, String phoneNumber) {
+        this.idUser = idUser;
+        this.phoneNumber = phoneNumber;
+    }
+
+
+    public User(int idUser, String username, String phoneNumber, Integer birthYear) {
+        this.idUser = idUser;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.birthYear=birthYear;
+    }
 
     public int getIdUser() {
         return idUser;
@@ -72,11 +78,11 @@ public class User implements Parcelable {
         this.username = username;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -104,21 +110,17 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+
         dest.writeInt(idUser);
         dest.writeString(username);
-        if (phoneNumber == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(phoneNumber);
-        }
-
+        dest.writeString(phoneNumber);
         if (birthYear == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeInt(birthYear);
         }
-
     }
+
+
 }
