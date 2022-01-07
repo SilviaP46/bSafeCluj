@@ -1,5 +1,6 @@
 package com.example.bsafecluj;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -142,6 +143,23 @@ public class Database extends SQLiteOpenHelper {
         cursorCourses.close();
         return guardianList;
 
+    }
+
+    @SuppressLint("Range")
+    public User checkExistingUser(String phoneNr){
+        SQLiteDatabase db = this.getReadableDatabase();
+        User user = new User();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + "WHERE" + PHONE_NUMBER_COLUMN + "=" + phoneNr, null);
+
+        if(cursor.moveToFirst()){
+            do {
+                user= new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))), cursor.getString(cursor.getColumnIndex("username")), cursor.getString(cursor.getColumnIndex("phoneNumber")), Integer.parseInt(cursor.getString(cursor.getColumnIndex("birthYear"))));
+            }
+            while ( cursor.moveToNext());
+        }
+        cursor.close();
+        return user;
     }
 }
 
