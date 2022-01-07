@@ -117,6 +117,18 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
+    public void removeGuardian(Guardian guardian){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query="DELETE FROM UserGuardian WHERE idGuardian="+guardian.getIdGuardian();
+        db.execSQL(query);
+
+        String query2="DELETE FROM Guardian WHERE idGuardian="+guardian.getIdGuardian();
+        db.execSQL(query2);
+
+    }
+
     public User getUserFromDb(String phoneNr){
 
         SQLiteDatabase db = this.getReadableDatabase();
