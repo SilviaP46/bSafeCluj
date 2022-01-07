@@ -1,6 +1,7 @@
 package com.example.bsafecluj;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -32,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MapPage extends FragmentActivity implements OnMapReadyCallback {
 
+    User user;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
@@ -40,7 +42,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Database db = Database.getInstance(MapPage.this);
-        User user = new User();
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_main_page);
@@ -48,19 +50,18 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            user = extras.getParcelable("user");
-        }
+        Bundle bundle = getIntent().getExtras();
+        String phoneNr = bundle.getString("phoneNr");
 
-        User finalUser = user;
+        user=db.getUserFromDb(phoneNr);
+
+        User finalUser1 = user;
         viewProfile.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MapPage.this, ProfilePage.class);
-                //i.putExtra("phoneNr",enterPhone.getText().toString());
-                i.putExtra("user", (Parcelable) finalUser);
+                i.putExtra("phoneNr", finalUser1.getPhoneNumber());
                 startActivity(i);
             }
         });

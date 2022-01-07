@@ -1,10 +1,15 @@
 package com.example.bsafecluj;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -14,11 +19,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int SMS_PERMISSION_CODE = 1;
     Button nextButton;
     EditText enterPhone;
     private String phoneNr;
-
-    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
         boolean isLoggedIn= prefs.getBoolean("isLoggedIn", false);
 
         if(isLoggedIn){
-            startActivity(new Intent(getApplicationContext(),MapPage.class));
+            Intent i = new Intent(MainActivity.this, MapPage.class);
+            i.putExtra("phoneNr",enterPhone.getText().toString());
+            startActivity(i);
             finish();
             return;
         }
@@ -66,10 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-
-                //db.storePhoneNr(user);
-
             }
         });
     }
+
+
 }

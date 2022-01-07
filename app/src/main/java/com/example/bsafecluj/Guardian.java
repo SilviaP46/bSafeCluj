@@ -1,6 +1,5 @@
 package com.example.bsafecluj;
 
-
 public class Guardian {
 
     private int idGuardian;
@@ -13,6 +12,7 @@ public class Guardian {
         this.username = username;
         this.phoneNumber = phoneNumber;
     }
+
 
     public int getIdGuardian() {
         return idGuardian;
@@ -37,4 +37,6 @@ public class Guardian {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+
 }

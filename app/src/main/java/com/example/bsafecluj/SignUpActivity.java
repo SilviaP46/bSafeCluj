@@ -39,10 +39,17 @@ public class SignUpActivity extends AppCompatActivity {
         enterUserName=findViewById(R.id.enterUserName);
         enterBirthYear=findViewById(R.id.enterBirthYear);
 
+//        Bundle bundle = getIntent().getExtras();
+//        String phoneNr = bundle.getString("phoneNr");
+//
+//        user=db.getUserFromDb(phoneNr).get(0);
+
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user=extras.getParcelable("user");
         }
+
 
         Toast.makeText(SignUpActivity.this, user.getPhoneNumber()+"  "+user.getBirthYear(), Toast.LENGTH_SHORT).show();
 
@@ -71,7 +78,10 @@ public class SignUpActivity extends AppCompatActivity {
                         Toast.makeText(SignUpActivity.this, "!", Toast.LENGTH_SHORT).show();
 
                         db.storeUserLoginData(user);
-                        startActivity(new Intent(SignUpActivity.this,MapPage.class));
+                        Intent i = new Intent(SignUpActivity.this, MapPage.class);
+                        i.putExtra("phoneNr", user.getPhoneNumber());
+                        startActivity(i);
+
                     }
 
 
