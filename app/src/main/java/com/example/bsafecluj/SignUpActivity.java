@@ -53,6 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String birthYear = enterBirthYear.getText().toString();
                 try {
 
                     user.setUsername(enterUserName.getText().toString());
@@ -66,9 +67,12 @@ public class SignUpActivity extends AppCompatActivity {
                     if(user.getBirthYear()==null || user.getUsername()==null ){
                         Toast.makeText(SignUpActivity.this, "Make sure you enter a valid username and birthdate!", Toast.LENGTH_SHORT).show();
                     }
+                    else if (!birthYear.matches("[1-2][0-9]{3}")){
+                        Toast.makeText(SignUpActivity.this, "Make sure you enter a valid birthdate!", Toast.LENGTH_SHORT).show();
+                    }
                     else{
 
-                        Toast.makeText(SignUpActivity.this, "!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "Signed up successfully!", Toast.LENGTH_SHORT).show();
 
                         db.storeUserLoginData(user);
                         startActivity(new Intent(SignUpActivity.this,MapPage.class));
