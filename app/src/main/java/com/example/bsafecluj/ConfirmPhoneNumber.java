@@ -40,12 +40,19 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
         confirmPhoneNrBtn =findViewById(R.id.confirmPhoneButton);
         enterCode=findViewById(R.id.enterCode);
 
+
+
+//        Bundle bundle = getIntent().getExtras();
+//        String phoneNr = bundle.getString("phoneNr");
+//
+//        user=db.getUserFromDb(phoneNr).get(0);
+
         Bundle extras = getIntent().getExtras();
         Intent i=getIntent();
         if (extras != null) {
             phoneNo = extras.getString("phoneNr");
             user=extras.getParcelable("user");
-            //The key argument here must match that used in the other activity
+
         }
 
         sendSMSMessage();

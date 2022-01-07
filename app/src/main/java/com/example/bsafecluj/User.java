@@ -3,6 +3,7 @@ package com.example.bsafecluj;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Parcelable {
@@ -14,9 +15,7 @@ public class User implements Parcelable {
     private List<Guardian> guardianList;
 
 
-    public User() {
-    }
-
+    public User() {}
 
     protected User(Parcel in) {
         idUser = in.readInt();
@@ -54,6 +53,10 @@ public class User implements Parcelable {
         this.phoneNumber = phoneNumber;
     }
 
+
+    public User(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public User(int idUser, String username, String phoneNumber, Integer birthYear) {
         this.idUser = idUser;
@@ -110,7 +113,6 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeInt(idUser);
         dest.writeString(username);
         dest.writeString(phoneNumber);

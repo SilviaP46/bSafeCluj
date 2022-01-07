@@ -2,6 +2,7 @@ package com.example.bsafecluj;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -49,12 +50,15 @@ public class Guardians_Page extends AppCompatActivity {
         //ImageView addContactImageView =findViewById(R.id.addContactIcon);
         FloatingActionButton addContact = findViewById(R.id.profileButton);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            user = extras.getParcelable("user");
-        }
+        /*Bundle bundle = getIntent().getExtras();
+        String phoneNr = bundle.getString("phoneNr");*/
 
-        user.setGuardianList(db.getGuardianList(user));
+        Intent intent=getIntent();
+        String phoneNr=intent.getStringExtra("phoneNr");
+
+        user=db.getUserFromDb(phoneNr);
+
+
 
         showGuardianList();
 
@@ -75,8 +79,17 @@ public class Guardians_Page extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("phoneNr", user.getPhoneNumber());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
     private void showGuardianList() {
 
+        user.setGuardianList(db.getGuardianList(user));
         List<String> guardianNames = new ArrayList<>();
         //Toast.makeText(this,"ianinte"+guardianNames.size(),Toast.LENGTH_SHORT).show();
         for (int i = 0; i <= user.getGuardianList().size() - 1; i++) {
@@ -156,12 +169,13 @@ public class Guardians_Page extends AppCompatActivity {
                         break;
 
                     }
-                    user.setGuardianList(contacts);
+
+                    showGuardianList();
                     //contactTextView.setText(user.getGuardianList().get(0).getPhoneNumber().toString());
                     c2.close();
                 }
                 c1.close();
-                showGuardianList();
+
             }
 
 

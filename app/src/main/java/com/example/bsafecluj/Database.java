@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -40,17 +41,17 @@ public class Database extends SQLiteOpenHelper {
 
 
     public Database(@Nullable Context context) {
-        super(context, "bSafeClujDB.db", null, 1);
+        super(context, "bSafeClujDB.db", null, 2);
     }
 
     //first time app is created
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String createTableStm = "CREATE TABLE " + USER_TABLE + " ( " + ID_USER_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME_COLUMN + " , " + PHONE_NUMBER_COLUMN + " INTEGER, " + BIRTH_YEAR_COLUMN + " INTEGER)";
-        String createTableGuardians = "CREATE TABLE " + GUARDIAN_TABLE + " ( " + ID_GUARDIAN_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME_GUARDIAN + " TEXT, " + PHONE_NUMBER_GUARDIAN + ")";
-        String createTableUserGuardians = "CREATE TABLE " + USER_GUARDIAN_TABLE + " ( " + ID_USER_COLUMN2 + " , " + ID_GUARDIAN_COLUMN2 + " TEXT, " +" FOREIGN KEY (" + ID_USER_COLUMN2 + ") REFERENCES " + USER_TABLE + "(" + ID_USER_COLUMN + ") ," +
-                "FOREIGN KEY (" + ID_GUARDIAN_COLUMN2 + ") REFERENCES " + GUARDIAN_TABLE + "(" + ID_GUARDIAN_COLUMN + "))";
+        String createTableStm = "CREATE TABLE " + USER_TABLE + " ( " + ID_USER_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME_COLUMN + " , " + PHONE_NUMBER_COLUMN + " TEXT, " + BIRTH_YEAR_COLUMN + " INTEGER)";
+        String createTableGuardians = "CREATE TABLE Guardian ( idGuardian INTEGER PRIMARY KEY AUTOINCREMENT, usernameGuardian TEXT, phoneNrGuardian TEXT )";
+        String createTableUserGuardians = "CREATE TABLE UserGuardian ( idUser INTEGER , idGuardian INTEGER, FOREIGN KEY (idUser) REFERENCES USER (idUser) ,FOREIGN KEY (\n" +
+                "idGuardian) REFERENCES Guardian (idGuardian))";
         db.execSQL(createTableStm);
         db.execSQL(createTableGuardians);
         db.execSQL(createTableUserGuardians);
@@ -60,17 +61,6 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
-    public boolean storePhoneNr(User user) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(USERNAME_COLUMN, user.getUsername());
-        cv.put(PHONE_NUMBER_COLUMN, user.getPhoneNumber());
-        long insert = db.insert(USER_TABLE, null, cv);
-        return insert != -1;
 
     }
 
@@ -85,29 +75,6 @@ public class Database extends SQLiteOpenHelper {
         return insert != -1;
 
     }
-
-    /*public void storeGuardianList(List<Guardian> guardianList, User user) {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorCourses = db.rawQuery("SELECT " + ID_GUARDIAN_COLUMN + " FROM " + GUARDIAN_TABLE, null);
-        ArrayList<Integer> guardiansIds = new ArrayList<>();
-
-        if (cursorCourses.moveToFirst()) {
-            do {
-                // on below line we are adding the data from cursor to our array list.
-                guardiansIds.add(Integer.valueOf(cursorCourses.getString(1)));
-            } while (cursorCourses.moveToNext());
-
-
-        }
-        cursorCourses.close();
-
-        for(Guardian g:guardianList){
-            if(g.getIdGuardian())
-        }
-
-    }*/
-
 
     public void storeGuardianList(User user, Guardian guardian) {
 
@@ -129,21 +96,28 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         final String ID_USER=String.valueOf(user.getIdUser());
-        Cursor cursorCourses = db.rawQuery("SELECT * FROM "+ GUARDIAN_TABLE+ " JOIN "+USER_GUARDIAN_TABLE + " ON "+GUARDIAN_TABLE+"."+ID_GUARDIAN_COLUMN+"="+USER_GUARDIAN_TABLE+"."+ID_GUARDIAN_COLUMN2+ " WHERE "+ USER_GUARDIAN_TABLE+"."+ ID_GUARDIAN_COLUMN2+"= "+ID_USER,null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ GUARDIAN_TABLE+ " JOIN "+USER_GUARDIAN_TABLE + " ON "+GUARDIAN_TABLE+"."+ID_GUARDIAN_COLUMN+"="+USER_GUARDIAN_TABLE+"."+ID_GUARDIAN_COLUMN2+ " WHERE "+ USER_GUARDIAN_TABLE+"."+ ID_USER_COLUMN2+"= "+ID_USER,null);
         List<Guardian>guardianList = new ArrayList<>();
 
-        if (cursorCourses.moveToFirst()) {
+       /* if (cursor.moveToFirst()) {
             do {
-                guardianList.add(new Guardian(Integer.parseInt(cursorCourses.getString(1)),cursorCourses.getString(2), cursorCourses.getString(3)));
+                guardianList.add(new Guardian(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idGuardian"))),cursor.getString(cursor.getColumnIndex("usernameGuardian")), cursor.getString(cursor.getColumnIndex("phoneNrGuardian"))));
 
-            } while (cursorCourses.moveToNext());
+            } while (cursor.moveToNext());
 
+        }*/
 
+        if (cursor.moveToFirst()){
+            guardianList.add(new Guardian(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idGuardian"))),cursor.getString(cursor.getColumnIndex("usernameGuardian")), cursor.getString(cursor.getColumnIndex("phoneNrGuardian"))));
+            while(cursor.moveToNext()){
+                guardianList.add(new Guardian(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idGuardian"))),cursor.getString(cursor.getColumnIndex("usernameGuardian")), cursor.getString(cursor.getColumnIndex("phoneNrGuardian"))));
+            }
         }
-        cursorCourses.close();
+        cursor.close();
         return guardianList;
 
     }
+
 
     @SuppressLint("Range")
     public User checkExistingUser(String phoneNr){
@@ -161,6 +135,35 @@ public class Database extends SQLiteOpenHelper {
         cursor.close();
         return user;
     }
+
+    public User getUserFromDb(String phoneNr){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query="SELECT * FROM USER WHERE phoneNumber = " + phoneNr;
+        Cursor cursor= db.rawQuery(query,null);
+
+        User user=new User(){};
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                if(cursor.getString(cursor.getColumnIndex("birthYear"))==null){
+                    System.out.println("ERROR");
+                }
+                    else{
+                    user= new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))), cursor.getString(cursor.getColumnIndex("username")), cursor.getString(cursor.getColumnIndex("phoneNumber")), Integer.parseInt(cursor.getString(cursor.getColumnIndex("birthYear"))));
+                }
+            } while (cursor.moveToNext());
+
+
+        }
+        cursor.close();
+        return user;
+
+    }
+
+
 }
 
 

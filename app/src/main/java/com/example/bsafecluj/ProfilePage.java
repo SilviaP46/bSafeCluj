@@ -1,5 +1,6 @@
 package com.example.bsafecluj;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
@@ -13,24 +14,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfilePage extends AppCompatActivity {
 
+    User user;
+    Database db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Database db = Database.getInstance(ProfilePage.this);
-        User user=new User();
+         db = Database.getInstance(ProfilePage.this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
         getSupportActionBar().setTitle("Your Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ImageView logOutImageView=findViewById(R.id.logOutImageView);
-        ImageView manageGuardiansImageView=findViewById(R.id.manageGuardiansImageView);
-        ImageView ediProfileImageView=findViewById(R.id.editProfileImageView);
+        ImageView logOutImageView = findViewById(R.id.logOutImageView);
+        ImageView manageGuardiansImageView = findViewById(R.id.manageGuardiansImageView);
+        ImageView ediProfileImageView = findViewById(R.id.editProfileImageView);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            user=extras.getParcelable("user");
-        }
+        Bundle bundle = getIntent().getExtras();
+        String phoneNr = bundle.getString("phoneNr");
+
+        user = db.getUserFromDb(phoneNr);
 
         User finalUser1 = user;
         logOutImageView.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +49,7 @@ public class ProfilePage extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("finish", true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //intent.putExtra("user", (Parcelable) finalUser1);
+
                 startActivity(intent);
 
                 finish();
@@ -55,19 +58,31 @@ public class ProfilePage extends AppCompatActivity {
 
 
         User finalUser = user;
+
         manageGuardiansImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfilePage.this, Guardians_Page.class);
-                intent.putExtra("user", (Parcelable) finalUser);
-                startActivity(intent);
+                intent.putExtra("phoneNr", finalUser.getPhoneNumber());
+                startActivityForResult(intent,1);
 
             }
         });
 
 
+    }
 
-
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String phoneNr=null;
+        db = Database.getInstance(ProfilePage.this);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                phoneNr = data.getStringExtra("phoneNr");
+            }
+        }
+        if(phoneNr!=null)
+            user=db.getUserFromDb(phoneNr);
 
     }
 }
