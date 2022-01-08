@@ -52,7 +52,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
 
         Bundle bundle = getIntent().getExtras();
         String phoneNr = bundle.getString("phoneNr");
-
         user=db.getUserFromDb(phoneNr);
 
         User finalUser1 = user;

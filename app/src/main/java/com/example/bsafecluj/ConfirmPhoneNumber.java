@@ -65,16 +65,16 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
                 try {
                     if(randomCode.equals(enterCode.getText().toString())){
-                        //if( db.checkExistingUser(phoneNo) != null)
+//                        if( db.checkExistingUser(phoneNo) != null)
 //                        {
 //                            Toast.makeText(ConfirmPhoneNumber.this, "You already have an account", Toast.LENGTH_SHORT).show();
 //                            Intent i = new Intent(ConfirmPhoneNumber.this, MapPage.class);
 //                        }
-                       // else {
+//                        else {
                             Intent i = new Intent(ConfirmPhoneNumber.this, SignUpActivity.class);
                             i.putExtra("user", (Parcelable) user);
                             startActivity(i);
-                       // }
+//                        }
                     }
                     else{
                         Toast.makeText(ConfirmPhoneNumber.this, "Code is incorrect!!", Toast.LENGTH_SHORT).show();

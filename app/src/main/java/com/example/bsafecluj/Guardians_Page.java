@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,6 +77,22 @@ public class Guardians_Page extends AppCompatActivity {
             }
         });
 
+        contactsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                removeContact(position);
+                return false;
+            }
+        });
+
+
+    }
+
+    public void removeContact(int i){
+        //user.setGuardianList(db.getGuardianList(user));
+        db.removeGuardian(user.getGuardianList().get(i));
+        user.getGuardianList().remove(i);
+        showGuardianList();
 
     }
 

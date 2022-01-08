@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String USERNAME_COLUMN = "username";
     public static final String PHONE_NUMBER_COLUMN = "phoneNumber";
     public static final String BIRTH_YEAR_COLUMN = "birthYear";
+    EditText enterPhone;
 
 
     public static synchronized Database getInstance(Context context) {
@@ -92,7 +94,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    @SuppressLint("Range")
+   // @SuppressLint("Range")
     public List<Guardian> getGuardianList(User user) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -124,9 +126,7 @@ public class Database extends SQLiteOpenHelper {
     public User checkExistingUser(String phoneNr){
         SQLiteDatabase db = this.getReadableDatabase();
         User user = new User();
-
         Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + "WHERE" + PHONE_NUMBER_COLUMN + "=" + phoneNr, null);
-
         if(cursor.moveToFirst()){
             do {
                 user= new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))), cursor.getString(cursor.getColumnIndex("username")), cursor.getString(cursor.getColumnIndex("phoneNumber")), Integer.parseInt(cursor.getString(cursor.getColumnIndex("birthYear"))));
@@ -139,22 +139,70 @@ public class Database extends SQLiteOpenHelper {
 
 
     @SuppressLint("Range")
+    public void removeGuardian(Guardian guardian){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query="DELETE FROM UserGuardian WHERE idGuardian="+guardian.getIdGuardian();
+        db.execSQL(query);
+
+        String query2="DELETE FROM Guardian WHERE idGuardian="+guardian.getIdGuardian();
+        db.execSQL(query2);
+
+    }
+
+
+//    public User getUserFromDb(String phoneNr){
+//
+//        phoneNr = String.valueOf(enterPhone.findViewById(R.id.editTextPhone));
+//
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        String query="SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr;
+//        Cursor cursor= db.rawQuery(query,null);
+//
+//        User user=new User(){};
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//
+//                if(cursor.getString(cursor.getColumnIndex("birthYear"))==null){
+//                    System.out.println("ERROR");
+//                }
+//                    else{
+//                    user= new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))), cursor.getString(cursor.getColumnIndex("username")), cursor.getString(cursor.getColumnIndex("phoneNumber")), Integer.parseInt(cursor.getString(cursor.getColumnIndex("birthYear"))));
+//                }
+//            } while (cursor.moveToNext());
+//
+//
+//        }
+//        cursor.close();
+//        return user;
+//
+//    }
+
     public User getUserFromDb(String phoneNr){
+
+        //phoneNr = String.valueOf(enterPhone.findViewById(R.id.editTextPhone));
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query="SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr;
-        Cursor cursor= db.rawQuery(query,null);
+        //String query="SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr;
+        Cursor cursor = db.query(USER_TABLE,
+                new String[]{USERNAME_COLUMN, PHONE_NUMBER_COLUMN, PHONE_NUMBER_COLUMN},
+                PHONE_NUMBER_COLUMN + "=?",
+                new String[]{phoneNr},  null, null, null);
+
 
         User user=new User(){};
 
         if (cursor.moveToFirst()) {
             do {
 
-                if(cursor.getString(cursor.getColumnIndex("birthYear"))==null){
+                if(cursor.getString(cursor.getColumnIndex("birthYear"))==null || cursor.getString(cursor.getColumnIndex("phoneNumber") )== null){
                     System.out.println("ERROR");
                 }
-                    else{
+                else{
                     user= new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))), cursor.getString(cursor.getColumnIndex("username")), cursor.getString(cursor.getColumnIndex("phoneNumber")), Integer.parseInt(cursor.getString(cursor.getColumnIndex("birthYear"))));
                 }
             } while (cursor.moveToNext());
@@ -165,8 +213,6 @@ public class Database extends SQLiteOpenHelper {
         return user;
 
     }
-
-
 }
 
 
