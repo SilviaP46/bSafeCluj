@@ -92,6 +92,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+    @SuppressLint("Range")
     public List<Guardian> getGuardianList(User user) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -136,11 +137,13 @@ public class Database extends SQLiteOpenHelper {
         return user;
     }
 
+
+    @SuppressLint("Range")
     public User getUserFromDb(String phoneNr){
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query="SELECT * FROM USER WHERE phoneNumber = " + phoneNr;
+        String query="SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr;
         Cursor cursor= db.rawQuery(query,null);
 
         User user=new User(){};
