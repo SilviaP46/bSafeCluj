@@ -38,14 +38,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("name", MODE_PRIVATE);
         boolean isLoggedIn= prefs.getBoolean("isLoggedIn", false);
 
-        if(isLoggedIn){
-            Intent i = new Intent(MainActivity.this, MapPage.class);
-            i.putExtra("phoneNr",enterPhone.getText().toString());
-            startActivity(i);
-            finish();
-            return;
-        }
-
 
         //button listeners
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     user = new User(1, enterPhone.getText().toString());
                     Toast.makeText(MainActivity.this, user.getPhoneNumber().toString(), Toast.LENGTH_SHORT).show();
+
+                    if(isLoggedIn){
+                        Intent i = new Intent(MainActivity.this, MapPage.class);
+                        i.putExtra("phoneNr",enterPhone.getText().toString());
+                        startActivity(i);
+                        finish();
+                        return;
+                    }
 
                     Intent i = new Intent(MainActivity.this, ConfirmPhoneNumber.class);
                     i.putExtra("phoneNr",enterPhone.getText().toString());
