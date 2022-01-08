@@ -187,11 +187,8 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        //String query="SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr;
-        Cursor cursor = db.query(USER_TABLE,
-                new String[]{USERNAME_COLUMN, PHONE_NUMBER_COLUMN, PHONE_NUMBER_COLUMN},
-                PHONE_NUMBER_COLUMN + "=?",
-                new String[]{phoneNr},  null, null, null);
+        String query="SELECT * FROM USER WHERE phoneNumber="+phoneNr;
+        Cursor cursor= db.rawQuery(query,null);
 
 
         User user=new User(){};

@@ -38,14 +38,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("name", MODE_PRIVATE);
         boolean isLoggedIn= prefs.getBoolean("isLoggedIn", false);
 
-        if(isLoggedIn){
-            Intent i = new Intent(MainActivity.this, MapPage.class);
-            i.putExtra("phoneNr",enterPhone.getText().toString());
-            startActivity(i);
-            finish();
-            return;
-        }
-
 
         //button listeners
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 User user;
                 final String phoneNr = enterPhone.getText().toString();
                 try {
+
                     if (!phoneNr.matches("^07[0-9]{8}")){
                         Toast.makeText(MainActivity.this, "Enter a valid phone number!", Toast.LENGTH_SHORT).show();
                     }
@@ -62,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
                         user = new User(1, enterPhone.getText().toString());
                         Toast.makeText(MainActivity.this, user.getPhoneNumber().toString(), Toast.LENGTH_SHORT).show();
 
+                        if(isLoggedIn){
+                            Intent i = new Intent(MainActivity.this, MapPage.class);
+                            i.putExtra("phoneNr",enterPhone.getText().toString());
+                            startActivity(i);
+                            finish();
+                            return;
+                        }
                         Intent i = new Intent(MainActivity.this, ConfirmPhoneNumber.class);
                         i.putExtra("phoneNr", enterPhone.getText().toString());
                         i.putExtra("user", (Parcelable) user);
