@@ -121,12 +121,12 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
-
+// wont need to sing up again
     @SuppressLint("Range")
     public User checkExistingUser(String phoneNr){
         SQLiteDatabase db = this.getReadableDatabase();
         User user = new User();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + "WHERE" + PHONE_NUMBER_COLUMN + "=" + phoneNr, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr.substring(1), null);
         if(cursor.moveToFirst()){
             do {
                 user= new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))), cursor.getString(cursor.getColumnIndex("username")), cursor.getString(cursor.getColumnIndex("phoneNumber")), Integer.parseInt(cursor.getString(cursor.getColumnIndex("birthYear"))));

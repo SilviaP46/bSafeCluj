@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button nextButton;
     EditText enterPhone;
     private String phoneNr;
+    private boolean allowed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,41 +45,79 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                User user;
-                final String phoneNr = enterPhone.getText().toString();
-                try {
+                if(checkSMSPermission()) {
+                    User user;
+                    final String phoneNr = enterPhone.getText().toString();
+                    try {
 
-                    if (!phoneNr.matches("^07[0-9]{8}")){
-                        Toast.makeText(MainActivity.this, "Enter a valid phone number!", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        user = new User(1, enterPhone.getText().toString());
-                        Toast.makeText(MainActivity.this, user.getPhoneNumber().toString(), Toast.LENGTH_SHORT).show();
+                        if (!phoneNr.matches("^07[0-9]{8}")) {
+                            Toast.makeText(MainActivity.this, "Enter a valid phone number!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            user = new User(1, enterPhone.getText().toString());
+                            Toast.makeText(MainActivity.this, user.getPhoneNumber(), Toast.LENGTH_SHORT).show();
 
-                        if(isLoggedIn){
-                            Intent i = new Intent(MainActivity.this, MapPage.class);
-                            i.putExtra("phoneNr",enterPhone.getText().toString());
+                            if (isLoggedIn) {
+                                Intent i = new Intent(MainActivity.this, MapPage.class);
+                                i.putExtra("phoneNr", enterPhone.getText().toString());
+                                startActivity(i);
+                                finish();
+                                return;
+                            }
+                            Intent i = new Intent(MainActivity.this, ConfirmPhoneNumber.class);
+                            i.putExtra("phoneNr", enterPhone.getText().toString());
+                            i.putExtra("user", (Parcelable) user);
                             startActivity(i);
-                            finish();
-                            return;
                         }
-                        Intent i = new Intent(MainActivity.this, ConfirmPhoneNumber.class);
-                        i.putExtra("phoneNr", enterPhone.getText().toString());
-                        i.putExtra("user", (Parcelable) user);
-                        startActivity(i);
+
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Enter phone number!!", Toast.LENGTH_SHORT).show();
+                        user = new User(-1, "error", "?", 0);
+
+
                     }
-
                 }
-                catch(Exception e){
-                    Toast.makeText(MainActivity.this, "Enter phone number!!", Toast.LENGTH_SHORT).show();
-                    user=new User(-1,"error","?",0);
-
-
+                else
+                    Toast.makeText(MainActivity.this, "Please grand permission, then press again the button!", Toast.LENGTH_LONG).show();
+                    requestSMSPermission();
                 }
 
-            }
         });
+
     }
 
 
+    // Function to check and request permission.
+    private boolean checkSMSPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == (PackageManager.PERMISSION_GRANTED);
+    }
+
+
+    private void requestSMSPermission() {
+        String[] permission = {Manifest.permission.SEND_SMS};
+        ActivityCompat.requestPermissions(this, permission, SMS_PERMISSION_CODE);
+        if(checkSMSPermission())
+            allowed = true;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode,
+                permissions,
+                grantResults);
+
+        if (requestCode == SMS_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity.this, "SMS Permission Granted", Toast.LENGTH_SHORT) .show();
+            }
+            else {
+                Toast.makeText(MainActivity.this, "SMS Permission Denied", Toast.LENGTH_SHORT) .show();
+            }
+        }
+
+    }
 }
+
