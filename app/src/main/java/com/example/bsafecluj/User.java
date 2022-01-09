@@ -12,10 +12,25 @@ public class User implements Parcelable {
     private String username;
     private String phoneNumber;
     private Integer birthYear;
+    private String loggedStatus;
     private List<Guardian> guardianList;
 
 
-    public User() {}
+    User(){}
+
+
+
+    public User(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public User(int idUser, String username, String phoneNumber, Integer birthYear, String loggedStatus) {
+        this.idUser = idUser;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.birthYear = birthYear;
+        this.loggedStatus = loggedStatus;
+    }
 
     protected User(Parcel in) {
         idUser = in.readInt();
@@ -26,6 +41,28 @@ public class User implements Parcelable {
         } else {
             birthYear = in.readInt();
         }
+        loggedStatus = in.readString();
+    }
+
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(idUser);
+        dest.writeString(username);
+        dest.writeString(phoneNumber);
+        if (birthYear == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(birthYear);
+        }
+        dest.writeString(loggedStatus);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -39,31 +76,6 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
-
-    public List<Guardian> getGuardianList() {
-        return guardianList;
-    }
-
-    public void setGuardianList(List<Guardian> guardianList) {
-        this.guardianList = guardianList;
-    }
-
-    public User(int idUser, String phoneNumber) {
-        this.idUser = idUser;
-        this.phoneNumber = phoneNumber;
-    }
-
-
-    public User(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public User(int idUser, String username, String phoneNumber, Integer birthYear) {
-        this.idUser = idUser;
-        this.username = username;
-        this.phoneNumber = phoneNumber;
-        this.birthYear=birthYear;
-    }
 
     public int getIdUser() {
         return idUser;
@@ -97,31 +109,19 @@ public class User implements Parcelable {
         this.birthYear = birthYear;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "idUser=" + idUser +
-                ", username='" + username + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                '}';
+    public String getLoggedStatus() {
+        return loggedStatus;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setLoggedStatus(String loggedStatus) {
+        this.loggedStatus = loggedStatus;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(idUser);
-        dest.writeString(username);
-        dest.writeString(phoneNumber);
-        if (birthYear == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(birthYear);
-        }
+    public List<Guardian> getGuardianList() {
+        return guardianList;
     }
 
+    public void setGuardianList(List<Guardian> guardianList) {
+        this.guardianList = guardianList;
+    }
 }

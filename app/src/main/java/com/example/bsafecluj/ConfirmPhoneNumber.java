@@ -29,8 +29,6 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
     User user;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,12 +42,6 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
         enterCode=findViewById(R.id.enterCode);
 
 
-
-//        Bundle bundle = getIntent().getExtras();
-//        String phoneNr = bundle.getString("phoneNr");
-//
-//        user=db.getUserFromDb(phoneNr).get(0);
-
         Bundle extras = getIntent().getExtras();
         Intent i=getIntent();
         if (extras != null) {
@@ -61,7 +53,6 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
         sendSMSMessage();
 
 
-
         confirmPhoneNrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +62,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
                         if( db.checkExistingUser(phoneNo) != null)
                         {
                             Toast.makeText(ConfirmPhoneNumber.this, "You already have an account", Toast.LENGTH_SHORT).show();
+                            db.changeLoggedStatus(user.getPhoneNumber(),"true");
                             Intent i = new Intent(ConfirmPhoneNumber.this, MapPage.class);
                             i.putExtra("user", (Parcelable) user);
                             startActivity(i);

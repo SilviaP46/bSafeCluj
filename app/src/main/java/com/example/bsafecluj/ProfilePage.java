@@ -35,21 +35,14 @@ public class ProfilePage extends AppCompatActivity {
 
         user = db.getUserFromDb(phoneNr);
 
-        User finalUser1 = user;
+
         logOutImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                SharedPreferences.Editor editor = getSharedPreferences("name", MODE_PRIVATE).edit();
-                editor.putString("phoneNr", "");
-                editor.putBoolean("isLoggedIn", false);
-                editor.apply();
-
+                user.setLoggedStatus("false");
+                db.changeLoggedStatus(user.getPhoneNumber(),"false");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("finish", true);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
                 startActivity(intent);
 
                 finish();

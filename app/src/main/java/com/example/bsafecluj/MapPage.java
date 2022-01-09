@@ -3,6 +3,7 @@ package com.example.bsafecluj;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;

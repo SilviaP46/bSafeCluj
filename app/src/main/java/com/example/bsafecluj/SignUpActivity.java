@@ -39,23 +39,11 @@ public class SignUpActivity extends AppCompatActivity {
         enterUserName=findViewById(R.id.enterUserName);
         enterBirthYear=findViewById(R.id.enterBirthYear);
 
-//        Bundle bundle = getIntent().getExtras();
-//        String phoneNr = bundle.getString("phoneNr");
-//
-//        user=db.getUserFromDb(phoneNr).get(0);
-
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user=extras.getParcelable("user");
         }
 
-
-        Toast.makeText(SignUpActivity.this, user.getPhoneNumber()+"  "+user.getBirthYear(), Toast.LENGTH_SHORT).show();
-
-
-
-//
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +53,6 @@ public class SignUpActivity extends AppCompatActivity {
 
                     user.setUsername(enterUserName.getText().toString());
                     user.setBirthYear(Integer.parseInt(enterBirthYear.getText().toString()));
-
-                    SharedPreferences.Editor editor = getSharedPreferences("name", MODE_PRIVATE).edit();
-                    editor.putString("phoneNr", user.getPhoneNumber().toString());
-                    editor.putBoolean("isLoggedIn", true);
-                    editor.apply();
 
                     if(user.getBirthYear()==null || user.getUsername()==null ){
                         Toast.makeText(SignUpActivity.this, "Make sure you enter a valid username and birthdate!", Toast.LENGTH_SHORT).show();
@@ -81,6 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                         Toast.makeText(SignUpActivity.this, "Signed up successfully!", Toast.LENGTH_SHORT).show();
 
+                        user.setLoggedStatus("true");
                         db.storeUserLoginData(user);
                         Intent i = new Intent(SignUpActivity.this, MapPage.class);
                         i.putExtra("phoneNr", user.getPhoneNumber());
@@ -126,9 +110,6 @@ public class SignUpActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-        //db.storeNameAndBirthDate(user);
-
 
     }
 }

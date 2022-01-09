@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int SMS_PERMISSION_CODE = 1;
     Button nextButton;
     EditText enterPhone;
-    private String phoneNr;
-    private boolean allowed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +30,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         nextButton=findViewById(R.id.nextButton);
         enterPhone=findViewById(R.id.editTextPhone);
 
-        SharedPreferences prefs = getSharedPreferences("name", MODE_PRIVATE);
-        boolean isLoggedIn= prefs.getBoolean("isLoggedIn", false);
+        if(db.getLoggedUserFromDb().getLoggedStatus()!=null && db.getLoggedUserFromDb().getLoggedStatus().equals("true")){
+            Intent i = new Intent(MainActivity.this, MapPage.class);
+            i.putExtra("phoneNr", db.getLoggedUserFromDb().getPhoneNumber());
+            startActivity(i);
+            finish();
+           return;
+        }
 
-
-        //button listeners
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,16 +53,9 @@ public class MainActivity extends AppCompatActivity {
                         if (!phoneNr.matches("^07[0-9]{8}")) {
                             Toast.makeText(MainActivity.this, "Enter a valid phone number!", Toast.LENGTH_SHORT).show();
                         } else {
-                            user = new User(1, enterPhone.getText().toString());
+                            user = new User(enterPhone.getText().toString());
                             Toast.makeText(MainActivity.this, user.getPhoneNumber(), Toast.LENGTH_SHORT).show();
 
-                            if (isLoggedIn) {
-                                Intent i = new Intent(MainActivity.this, MapPage.class);
-                                i.putExtra("phoneNr", enterPhone.getText().toString());
-                                startActivity(i);
-                                finish();
-                                return;
-                            }
                             Intent i = new Intent(MainActivity.this, ConfirmPhoneNumber.class);
                             i.putExtra("phoneNr", enterPhone.getText().toString());
                             i.putExtra("user", (Parcelable) user);
@@ -71,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Enter phone number!!", Toast.LENGTH_SHORT).show();
-                        user = new User(-1, "error", "?", 0);
+                        user = new User("error");
 
 
                     }
@@ -95,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     private void requestSMSPermission() {
         String[] permission = {Manifest.permission.SEND_SMS};
         ActivityCompat.requestPermissions(this, permission, SMS_PERMISSION_CODE);
+        boolean allowed = false;
         if(checkSMSPermission())
             allowed = true;
     }
