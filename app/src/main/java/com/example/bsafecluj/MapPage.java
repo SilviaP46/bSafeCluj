@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.telephony.SmsManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentFactory;
@@ -34,6 +37,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MapPage extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
     User user;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -53,7 +57,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
 
         Bundle bundle = getIntent().getExtras();
         String phoneNr = bundle.getString("phoneNr");
-        user=db.getUserFromDb(phoneNr);
+        user = db.getUserFromDb(phoneNr);
 
         User finalUser1 = user;
         viewProfile.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +114,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
                     fetchLastLocation();
                 }
                 break;
+
         }
+
+
     }
 }

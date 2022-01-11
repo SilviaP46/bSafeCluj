@@ -41,7 +41,6 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
         confirmPhoneNrBtn =findViewById(R.id.confirmPhoneButton);
         enterCode=findViewById(R.id.enterCode);
 
-
         Bundle extras = getIntent().getExtras();
         Intent i=getIntent();
         if (extras != null) {
@@ -51,6 +50,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
         }
 
         sendSMSMessage();
+
 
 
         confirmPhoneNrBtn.setOnClickListener(new View.OnClickListener() {
