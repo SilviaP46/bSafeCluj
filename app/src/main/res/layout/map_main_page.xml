@@ -36,5 +36,73 @@
         app:layout_constraintVertical_bias="0.023"
         tools:ignore="SpeakableTextPresentCheck" />
 
+<!--    <Button-->
 
+<!--        android:id="@+id/dangerButton"-->
+<!--        android:layout_width="140dp"-->
+<!--        android:layout_height="130dp"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="52dp"-->
+<!--        android:layout_marginTop="566dp"-->
+<!--        android:layout_marginEnd="219dp"-->
+<!--        android:layout_marginBottom="35dp"-->
+<!--        android:background="@drawable/feeling_in_danger_button"-->
+<!--        android:padding="15dp"-->
+<!--        android:shadowColor="@color/white"-->
+<!--        android:shadowDx="1"-->
+<!--        android:shadowDy="1"-->
+<!--        android:shadowRadius="2"-->
+<!--        android:text="Feeling in danger"-->
+<!--        android:textAppearance="?android:textAppearanceLarge"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textStyle="bold" />-->
+
+    <RadioGroup
+        android:id="@+id/toggle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="50dp"
+
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/switch_outline"
+        android:checkedButton="@+id/safe"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/safe"
+            android:layout_width="97dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/safe_button_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Safe"
+            android:fontFeatureSettings=""
+            android:textColor="@color/white"
+            android:textSize="17sp"/>
+
+        <RadioButton
+            android:id="@+id/danger"
+            android:layout_width="91dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/danger_button_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Danger"
+            android:textColor="@color/white"
+            android:textSize="17sp"/>
+    </RadioGroup>
 </RelativeLayout>

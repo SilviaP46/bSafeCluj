@@ -83,6 +83,8 @@
             android:parentActivityName=".ProfilePage"
             android:label="@string/app_name"/>
 
+
+
     </application>
 
 </manifest>

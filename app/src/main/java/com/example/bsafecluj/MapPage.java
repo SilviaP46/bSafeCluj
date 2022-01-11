@@ -1,26 +1,18 @@
 package com.example.bsafecluj;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.telephony.SmsManager;
-import android.view.KeyEvent;
+import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentFactory;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -29,7 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,23 +34,26 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
     FloatingActionButton viewProfile;
+    RadioButton dangerButton, safeButton;
+    Database db = Database.getInstance(MapPage.this);
+    boolean checked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Database db = Database.getInstance(MapPage.this);
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_main_page);
         viewProfile = findViewById(R.id.profileButton);
+        dangerButton = findViewById(R.id.danger);
+        safeButton = findViewById(R.id.safe);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         Bundle bundle = getIntent().getExtras();
         String phoneNr = bundle.getString("phoneNr");
-        user = db.getUserFromDb(phoneNr);
-
+        user=db.getUserFromDb(phoneNr);
         User finalUser1 = user;
+
+
         viewProfile.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -70,6 +64,22 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
             }
         });
         fetchLastLocation();
+
+        dangerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable, 1000);
+            }
+        });
+
+        safeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendSafeSMStoGuardians();
+                checked = true;
+            }
+        });
 
 
     }
@@ -90,7 +100,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
                     SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
                     //assert supportMapFragment != null;
                     supportMapFragment.getMapAsync(MapPage.this);
-
 
                 }
             }
@@ -119,4 +128,43 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
 
 
     }
+
+
+    protected void sendSMSMessage(String phoneNr, String message) {
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phoneNr, null, message, null, null);
+    }
+
+    protected void sendDangerSMStoGuardians(){
+        fetchLastLocation();
+        String message = "Hello i m in danger pls come fast http://maps.google.com/?q=" + currentLocation.getLatitude()  + "," + currentLocation.getLongitude();
+        for( Guardian guardian: db.getGuardianList(user))
+            sendSMSMessage(guardian.getPhoneNumber(),message );
+    }
+
+    protected void sendSafeSMStoGuardians(){
+        fetchLastLocation();
+        String message = "I am safe now!!!";
+        for( Guardian guardian: db.getGuardianList(user))
+            sendSMSMessage(guardian.getPhoneNumber(),message );
+    }
+
+    final Handler handler = new Handler();
+    final Runnable runnable = new Runnable() {
+        public void run() {
+            if(checked){ // just remove call backs
+                handler.removeCallbacks(this);
+            } else { // post again
+               // Log.d("Runnable","Handler is working");
+                sendDangerSMStoGuardians();
+                handler.postDelayed(this, 30*1000);
+            }
+        }
+    };
+
+
+
+
+
+
 }
