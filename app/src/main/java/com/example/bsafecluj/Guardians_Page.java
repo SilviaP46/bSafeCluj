@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,17 +45,17 @@ public class Guardians_Page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.guardians_page);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Manage Guardians");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         contactTextView = findViewById(R.id.textView9);
         contactsListView = findViewById(R.id.guardiansList);
 
         FloatingActionButton addContact = findViewById(R.id.profileButton);
 
-        Intent intent=getIntent();
-        String phoneNr=intent.getStringExtra("phoneNr");
+        Intent intent = getIntent();
+        String phoneNr = intent.getStringExtra("phoneNr");
 
-        user=db.getUserFromDb(phoneNr);
+        user = db.getUserFromDb(phoneNr);
 
         showGuardianList();
 
@@ -83,7 +84,7 @@ public class Guardians_Page extends AppCompatActivity {
 
     }
 
-    public void removeContact(int i){
+    public void removeContact(int i) {
         db.removeGuardian(user.getGuardianList().get(i));
         user.getGuardianList().remove(i);
         showGuardianList();
@@ -170,7 +171,8 @@ public class Guardians_Page extends AppCompatActivity {
                         @SuppressLint("Range") String contactNumber = c2.getString(c2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         if (!checkIfContactExists(contactNumber)) {
                             contacts.add(new Guardian(Integer.parseInt(contactId), contactName, contactNumber));
-                            db.storeGuardianList(user,new Guardian(Integer.parseInt(contactId), contactName, contactNumber));
+                            db.storeGuardianList(user, new Guardian(Integer.parseInt(contactId), contactName, contactNumber));
+                            sendSmsToGuardianWhenAddedToList(new Guardian(Integer.parseInt(contactId), contactName, contactNumber));
 
                         } else {
                             Toast.makeText(this, "Contact already exits. Choose another!", Toast.LENGTH_SHORT).show();
@@ -196,7 +198,7 @@ public class Guardians_Page extends AppCompatActivity {
 
     public boolean checkIfContactExists(String phoneNr) {
 
-        if(user.getGuardianList().size()==0)
+        if (user.getGuardianList().size() == 0)
             return false;
 
         for (Guardian g : user.getGuardianList()) {
@@ -206,5 +208,19 @@ public class Guardians_Page extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    protected void sendSmsToGuardianWhenAddedToList(Guardian guardian) {
+
+
+        String message = "Hello, " + guardian.getUsername() + "! I just added you as my guardian on bSafeCluj app. Download the app for more features here:...";
+        sendSMSMessage(guardian.getPhoneNumber(), message,guardian);
+
+    }
+
+    protected void sendSMSMessage(String phoneNr, String message,Guardian guardian) {
+        Toast.makeText(this, guardian.getUsername()+" was notified that she/he is now your guardian. ", Toast.LENGTH_SHORT).show();
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phoneNr, null, message, null, null);
     }
 }

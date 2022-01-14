@@ -72,7 +72,7 @@ public class Database extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(USERNAME_COLUMN, user.getUsername());
         cv.put(BIRTH_YEAR_COLUMN, user.getBirthYear());
-        cv.put(PHONE_NUMBER_COLUMN, "+40" + user.getPhoneNumber());
+        cv.put(PHONE_NUMBER_COLUMN, user.getPhoneNumber());
         long insert = db.insert(USER_TABLE, null, cv);
         return insert != -1;
 
@@ -118,15 +118,19 @@ public class Database extends SQLiteOpenHelper {
     public User checkExistingUser(String phoneNr){
         SQLiteDatabase db = this.getReadableDatabase();
         User user = new User();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr.substring(1), null);
+        boolean userFound=false;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + PHONE_NUMBER_COLUMN + " = " + phoneNr, null);
         if(cursor.moveToFirst()){
+            userFound=true;
             do {
                 user= new User(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))), cursor.getString(cursor.getColumnIndex("username")), cursor.getString(cursor.getColumnIndex("phoneNumber")), Integer.parseInt(cursor.getString(cursor.getColumnIndex("birthYear"))),(cursor.getString(cursor.getColumnIndex("loggedStatus"))));
             }
             while ( cursor.moveToNext());
         }
         cursor.close();
-        return user;
+        if(userFound)
+            return user;
+        else return null;
     }
 
 
@@ -146,11 +150,9 @@ public class Database extends SQLiteOpenHelper {
 
     public User getUserFromDb(String phoneNr){
 
-        //phoneNr = String.valueOf(enterPhone.findViewById(R.id.editTextPhone));
-
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query="SELECT * FROM USER WHERE phoneNumber="+"0773828070";
+        String query="SELECT * FROM USER WHERE phoneNumber="+phoneNr;
         Cursor cursor= db.rawQuery(query,null);
 
 
@@ -201,6 +203,15 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String query="UPDATE USER SET loggedStatus = '"+status+"' WHERE phoneNumber ="+phoneNr;
+        db.execSQL(query);
+
+    }
+
+    public void editProfile(String phoneNr,String username, int year){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query="UPDATE USER SET username = '"+username+"' , birthYear= "+year+" WHERE phoneNumber ="+phoneNr;
         db.execSQL(query);
 
     }

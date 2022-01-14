@@ -59,6 +59,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
                 try {
                     if(randomCode.equals(enterCode.getText().toString())){
+                        //Toast.makeText(ConfirmPhoneNumber.this, db.checkExistingUser(phoneNo).getPhoneNumber(), Toast.LENGTH_SHORT).show();
                         if( db.checkExistingUser(phoneNo) != null)
                         {
                             Toast.makeText(ConfirmPhoneNumber.this, "You already have an account", Toast.LENGTH_SHORT).show();
@@ -79,6 +80,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
                 }
                 catch(Exception e){
                     Toast.makeText(ConfirmPhoneNumber.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
 
                 }
 
