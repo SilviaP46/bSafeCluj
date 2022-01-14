@@ -1,22 +1,28 @@
 package com.example.bsafecluj;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.Settings;
 import android.telephony.SmsManager;
-import android.util.Log;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,8 +36,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 public class MapPage extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
     User user;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -49,12 +58,33 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
         dangerButton = findViewById(R.id.danger);
         safeButton = findViewById(R.id.safe);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         Bundle bundle = getIntent().getExtras();
         String phoneNr = bundle.getString("phoneNr");
         user=db.getUserFromDb(phoneNr);
         User finalUser1 = user;
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if(!canGetLocation()){
+            buildAlertMessageNoGps();
+
+        }
+        if(!isNetworkConnected())
+            enableInternet();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        fetchLastLocation();
+                    }
+                },
+                10000
+        );
+
+
 
 
         viewProfile.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +96,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
                 startActivity(i);
             }
         });
-        fetchLastLocation();
+
 
         dangerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +156,10 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
                     fetchLastLocation();
                 }
                 break;
+
         }
+
+
     }
 
 
@@ -136,8 +169,14 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
     }
 
     protected void sendDangerSMStoGuardians(){
-        fetchLastLocation();
-        String message = "Hello i m in danger pls come fast http://maps.google.com/?q=" + currentLocation.getLatitude()  + "," + currentLocation.getLongitude();
+        String message;
+        if(isNetworkConnected() && canGetLocation()){
+            fetchLastLocation();
+            message = "SUNA POLITIA SA VINA CU MUNITIA!! aici: http://maps.google.com/?q=" + currentLocation.getLatitude()  + "," + currentLocation.getLongitude();
+        }
+        else{
+            message= "I am in danger. My location service is off. Unable to send current location.";
+        }
         for( Guardian guardian: db.getGuardianList(user))
             sendSMSMessage(guardian.getPhoneNumber(),message );
     }
@@ -163,8 +202,78 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
     };
 
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
 
 
+    public boolean canGetLocation() {
+        return isLocationEnabled(MapPage.this); // application context
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+        } else {
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+            return !TextUtils.isEmpty(locationProviders);
+        }
+    }
+
+    public void statusCheck() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+
+        }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void enableInternet() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your data seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(Settings.ACTION_DATA_USAGE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 
 }
