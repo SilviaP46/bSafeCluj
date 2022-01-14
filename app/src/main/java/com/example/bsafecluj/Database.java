@@ -150,7 +150,7 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query="SELECT * FROM USER WHERE phoneNumber="+"0773828070";
+        String query="SELECT * FROM USER WHERE phoneNumber="+ phoneNr;
         Cursor cursor= db.rawQuery(query,null);
 
 

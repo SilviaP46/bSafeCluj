@@ -10,12 +10,17 @@
         android:id="@+id/textView9"
         android:layout_width="151dp"
         android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="223dp"
         android:layout_marginBottom="661dp"
         android:text="@string/your_guardians"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#9474B4"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +43,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="661dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="#D299DC"
+
+        app:backgroundTint="#9474B4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.921"
@@ -58,6 +64,9 @@
         android:layout_marginStart="44dp"
         android:layout_marginTop="93dp"
         android:layout_marginEnd="45dp"
-        android:layout_marginBottom="52dp" />
+        android:layout_marginBottom="52dp"
+        android:divider="#9474B4"
+        android:dividerHeight="1dp"
+        />
 
 </RelativeLayout>
