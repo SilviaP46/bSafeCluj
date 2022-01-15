@@ -5,4 +5,8 @@
         <item name="windowMinWidthMajor">50%</item>
         <item name="windowMinWidthMinor">50%</item></style>
 
+    <style name="bckg">
+        <item name="windowMinWidthMajor">50%</item>
+        <item name="windowMinWidthMinor">50%</item></style>
+
 </resources>

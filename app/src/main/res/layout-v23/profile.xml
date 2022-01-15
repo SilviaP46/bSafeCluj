@@ -78,15 +78,15 @@
                 android:layout_height="48dp"
                 android:layout_margin="5dp"
                 android:background="#BFADDF"
+                android:foreground="?selectableItemBackground"
                 android:clickable="true"
-                android:cropToPadding="true"
-                android:padding="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.516"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.69" />
+                app:layout_constraintVertical_bias="0.69"
+                android:focusable="true" />
 
             <ImageView
                 android:id="@+id/editProfileImageView"
@@ -94,17 +94,17 @@
                 android:layout_height="48dp"
                 android:layout_margin="5dp"
                 android:background="#BFADDF"
+                android:foreground="?selectableItemBackground"
                 android:backgroundTint="#BFADDF"
                 android:clickable="true"
-                android:cropToPadding="true"
-                android:padding="3dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.516"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.435" />
+                app:layout_constraintVertical_bias="0.435"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/textView7"

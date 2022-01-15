@@ -64,11 +64,9 @@
 
         <activity
             android:name=".ProfilePage"
-            android:parentActivityName=".MapPage"
             android:label="@string/app_name"/>
         <activity
             android:name=".Guardians_Page"
-            android:parentActivityName=".ProfilePage"
             android:label="@string/app_name"/>
         <activity android:name=".Pop"
             android:theme="@style/ok"/>

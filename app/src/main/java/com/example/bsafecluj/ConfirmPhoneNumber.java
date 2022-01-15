@@ -59,7 +59,6 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
                 try {
                     if(randomCode.equals(enterCode.getText().toString())){
-                        //Toast.makeText(ConfirmPhoneNumber.this, db.checkExistingUser(phoneNo).getPhoneNumber(), Toast.LENGTH_SHORT).show();
                         if( db.checkExistingUser(phoneNo) != null)
                         {
                             Toast.makeText(ConfirmPhoneNumber.this, "You already have an account", Toast.LENGTH_SHORT).show();
@@ -91,7 +90,6 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
 
     protected void sendSMSMessage() {
-        //phoneNo = user.getPhoneNumber().toString();
         message = "Your security code is: "+randomCode;
 
 
@@ -102,7 +100,6 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
                     Manifest.permission.SEND_SMS)) { } }
         else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
-            Toast.makeText(ConfirmPhoneNumber.this, "ok", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -115,7 +112,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     SmsManager smsManager = SmsManager.getDefault();
                     smsManager.sendTextMessage(phoneNo, null, message, null, null);
-                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                    Toast.makeText(getApplicationContext(), "SMS sent to your phone.",
                             Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(),

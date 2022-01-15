@@ -85,6 +85,7 @@ public class Guardians_Page extends AppCompatActivity {
     }
 
     public void removeContact(int i) {
+        Toast.makeText(this,user.getGuardianList().get(i).getUsername() +" was removed from your guardian list.", Toast.LENGTH_SHORT).show();
         db.removeGuardian(user.getGuardianList().get(i));
         user.getGuardianList().remove(i);
         showGuardianList();

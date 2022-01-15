@@ -7,8 +7,8 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="306dp"
-        android:layout_height="35dp"
+        android:layout_width="309dp"
+        android:layout_height="42dp"
         android:text="Confirm your phone number by entering the code send to you phone."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +21,7 @@
         android:id="@+id/enterCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#ACA7A7"
         android:ems="10"
         android:inputType="phone"
         android:minHeight="48dp"
@@ -32,16 +33,18 @@
         app:layout_constraintVertical_bias="0.403"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/confirmPhoneButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="51dp"
+        android:backgroundTint="#8B66AF"
         android:text="Confirm"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.513" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
