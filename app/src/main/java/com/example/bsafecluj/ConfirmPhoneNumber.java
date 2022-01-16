@@ -85,7 +85,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
 
             }
         });
-        //db.storePhoneNr(user);
+
     }
 
 

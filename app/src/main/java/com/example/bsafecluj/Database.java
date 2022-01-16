@@ -50,7 +50,8 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String createTableStm = "CREATE TABLE " + USER_TABLE + " ( " + ID_USER_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME_COLUMN + " , " + PHONE_NUMBER_COLUMN + " TEXT, " + BIRTH_YEAR_COLUMN + " INTEGER, loggedStatus TEXT)";
+        String createTableStm = "CREATE TABLE " + USER_TABLE + " ( " + ID_USER_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME_COLUMN + " , " + PHONE_NUMBER_COLUMN +
+                " TEXT, " + BIRTH_YEAR_COLUMN + " INTEGER, loggedStatus TEXT)";
         String createTableGuardians = "CREATE TABLE Guardian ( idGuardian INTEGER PRIMARY KEY AUTOINCREMENT, usernameGuardian TEXT, phoneNrGuardian TEXT )";
         String createTableUserGuardians = "CREATE TABLE UserGuardian ( idUser INTEGER , idGuardian INTEGER, FOREIGN KEY (idUser) REFERENCES USER (idUser) ,FOREIGN KEY (\n" +
                 "idGuardian) REFERENCES Guardian (idGuardian))";
