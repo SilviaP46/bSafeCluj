@@ -103,6 +103,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View v) {
                 handler.removeCallbacks(runnable);
                 handler.postDelayed(runnable, 1000);
+                checked = false;
             }
         });
 
@@ -179,6 +180,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
         }
         for( Guardian guardian: db.getGuardianList(user))
             sendSMSMessage(guardian.getPhoneNumber(),message );
+        Toast.makeText(getApplicationContext(), "SOS message sent", Toast.LENGTH_SHORT).show();
+
     }
 
     protected void sendSafeSMStoGuardians(){
@@ -186,6 +189,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
         String message = "I am safe now!!!";
         for( Guardian guardian: db.getGuardianList(user))
             sendSMSMessage(guardian.getPhoneNumber(),message );
+        Toast.makeText(getApplicationContext(), " 'I m safe' SMS sent ", Toast.LENGTH_SHORT).show();
+
     }
 
     final Handler handler = new Handler();

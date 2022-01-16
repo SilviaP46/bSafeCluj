@@ -57,6 +57,8 @@ public class Guardians_Page extends AppCompatActivity {
 
         user = db.getUserFromDb(phoneNr);
 
+
+
         showGuardianList();
 
         addContact.setOnClickListener(new View.OnClickListener() {

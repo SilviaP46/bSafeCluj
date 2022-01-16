@@ -65,6 +65,7 @@ public class ConfirmPhoneNumber extends AppCompatActivity {
                             db.changeLoggedStatus(user.getPhoneNumber(),"true");
                             Intent i = new Intent(ConfirmPhoneNumber.this, MapPage.class);
                             i.putExtra("user", (Parcelable) user);
+                            i.putExtra("phoneNr", user.getPhoneNumber());
                             startActivity(i);
                         }
                         else {
