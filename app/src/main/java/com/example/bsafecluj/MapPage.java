@@ -103,6 +103,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View v) {
                 handler.removeCallbacks(runnable);
                 handler.postDelayed(runnable, 1000);
+                checked=false;
             }
         });
 
@@ -130,7 +131,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
             public void onSuccess(Location location) {
                 if (location != null) {
                     currentLocation = location;
-                    //Toast.makeText(getApplicationContext(), currentLocation.getLatitude() + " " + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), currentLocation.getLatitude() + " " + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                     SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
                     //assert supportMapFragment != null;
                     supportMapFragment.getMapAsync(MapPage.this);
@@ -167,6 +168,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
     protected void sendSMSMessage(String phoneNr, String message) {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNr, null, message, null, null);
+
     }
 
     protected void sendDangerSMStoGuardians(){
@@ -180,6 +182,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
         }
         for( Guardian guardian: db.getGuardianList(user))
             sendSMSMessage(guardian.getPhoneNumber(),message );
+        Toast.makeText(getApplicationContext(), "SOS message sent", Toast.LENGTH_SHORT).show();
     }
 
     protected void sendSafeSMStoGuardians(){
@@ -187,6 +190,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback {
         String message = "I am safe now!!!";
         for( Guardian guardian: db.getGuardianList(user))
             sendSMSMessage(guardian.getPhoneNumber(),message );
+        Toast.makeText(getApplicationContext(), " 'I m safe' SMS sent ", Toast.LENGTH_SHORT).show();
     }
 
     final Handler handler = new Handler();

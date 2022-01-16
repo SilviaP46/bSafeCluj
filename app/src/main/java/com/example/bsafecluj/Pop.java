@@ -34,7 +34,7 @@ public class Pop extends Activity {
         String phoneNr = bundle.getString("phoneNr");
         User user = db.getUserFromDb(phoneNr);
 
-        Toast.makeText(getApplicationContext(), user.getUsername(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), user.getUsername(), Toast.LENGTH_SHORT).show();
 
 
         username.setText(user.getUsername());
